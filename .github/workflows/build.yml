@@ -6,21 +6,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Unzip
-        run: |
-          unzip -o Cinesuivi.zip
-          ls -R | head -n 100
+        run: unzip -o Cinesuivi.zip
       - name: Setup Java 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: 8.5
       - name: Build APK
-        run: |
-          GRADLE=$(find -name gradlew | head -n 1)
-          chmod +x $GRADLE
-          DIR=$(dirname $GRADL  cd $./gradlew assembleDebug
+        working-directory: Cinesuivi
+        run: gradle assembleDebug
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: Cinesuivi-APK
-          path: '**/build/outputs/apk/debug/*.apk'
+          path: Cinesuivi/app/build/outputs/apk/debug/*.apk
